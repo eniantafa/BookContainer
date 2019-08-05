@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IBook } from './book';
+import { BookService } from './book.service';
 
 @Component({
-  selector: 'pm-books',
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.css']
 })
@@ -15,6 +15,7 @@ export class BookListComponent implements OnInit {
   imageMargin: number = 2;
   // tslint:disable-next-line: no-inferrable-types
   showImage: boolean = false;
+  errorMessage: string;
 
   _listFilter: string;
   get listFilter(): string {
@@ -26,25 +27,13 @@ export class BookListComponent implements OnInit {
   }
 
   filteredbooks: IBook[];
-  books: IBook[] = [
+  books: IBook[] = [];
 
-      {
-        'bookId': 1,
-        'bookName': 'House of Leaves',
-        'bookAuthor': 'Mark Z. Danielewski',
-        'bookCode': 'GDN-0011',
-        'releaseDate': 'March 7, 2000',
-        'description': '[Insert description here]',
-        'price': 19.95,
-        'starRating': 4.2,
-        'imageUrl': 'http://t2.gstatic.com/images?q=tbn:ANd9GcSatspN_E0gHIsi3JfMPnxNM1M0yV7F1e8UyfTaxahaq9ucrUlG'
-      }
-  ];
+   constructor(private bookService: BookService) {
 
-  constructor() {
-    this.filteredbooks = this.books;
-    this.listFilter = 'house';
-  }
+    this.listFilter = '';
+
+   }
 
   onRatingClicked(message: string): void {
     this.pageTitle = 'Book List' + message;
@@ -61,6 +50,12 @@ export class BookListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log('In OnInit');
+    this.bookService.getbooks().subscribe(
+      books => {
+        this.books = books;
+        this.filteredbooks = this.books;
+      },
+      error => this.errorMessage = <any>error
+    );
   }
 }

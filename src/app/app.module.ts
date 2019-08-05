@@ -1,23 +1,27 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-
+import { HttpClientModule } from '@angular/common/http/';
 import { AppComponent } from './app.component';
 
-import { ConvertToSpacesPipe } from './shared/convert-to-spaces.pipe';
-import { StarComponent } from './shared/star.component';
-import { BookListComponent } from './books/book-list.component';
+import { WelcomeComponent } from './home/welcome.component';
+import {RouterModule} from '@angular/router';
+import { BookModule } from './books/book.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    BookListComponent,
-    ConvertToSpacesPipe,
-    StarComponent
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    HttpClientModule,
+    RouterModule.forRoot([
+      {path: 'welcome', component: WelcomeComponent},
+      {path: '', redirectTo: 'welcome', pathMatch: 'full'},
+      {path: '**', redirectTo: 'welcome', pathMatch: 'full'}
+    ]),
+    BookModule
   ],
   bootstrap: [AppComponent]
 })

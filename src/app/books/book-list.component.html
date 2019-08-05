@@ -43,7 +43,9 @@
                    [style.width.px]='imageWidth'
                    [style.margin.px]='imageMargin'>
             </td>
-            <td>{{ book.bookName }}</td>
+            <td>
+              <a [routerLink]="['/books', book.bookId]">{{ book.bookName }}</a>
+            </td>
             <td>{{ book.bookAuthor }}</td>
             <td>{{ book.bookCode | lowercase | convertToSpaces: '-' }}</td>
             <td>{{ book.releaseDate }}</td>
